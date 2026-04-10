@@ -107,7 +107,8 @@ class GeneratedImageDataset(Dataset):
 # Training & Evaluation
 # ============================================================
 
-def train_classifier(model, train_loader, val_loader, device, epochs=30, lr=1e-4):
+def train_classifier(model, train_loader, val_loader, device, epochs=30, lr=1e-4,
+                     class_weights=None):
     """Train classifier and return best validation metrics."""
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
@@ -128,7 +129,7 @@ def train_classifier(model, train_loader, val_loader, device, epochs=30, lr=1e-4
             labels = batch['kl_grade'].to(device)
 
             logits = model(images)
-            loss = F.cross_entropy(logits, labels)
+            loss = F.cross_entropy(logits, labels, weight=class_weights)
 
             optimizer.zero_grad()
             loss.backward()
@@ -188,6 +189,55 @@ def evaluate_classifier(model, loader, device):
         'predictions': all_preds,
         'labels': all_labels
     }
+
+
+def extract_labels(dataset):
+    """Extract KL labels from Dataset / ConcatDataset for class balancing."""
+    if isinstance(dataset, HandJointDataset):
+        return dataset.data['kl_grade'].astype(int).tolist()
+    if isinstance(dataset, GeneratedImageDataset):
+        return [int(dataset.kl_grade)] * len(dataset)
+    if isinstance(dataset, ConcatDataset):
+        labels = []
+        for ds in dataset.datasets:
+            labels.extend(extract_labels(ds))
+        return labels
+    raise TypeError(f"Unsupported dataset type for label extraction: {type(dataset)}")
+
+
+def plan_generated_quota(real_kl3, real_kl4, avail_kl3, avail_kl4, total_budget):
+    """
+    Plan generated image counts (X for KL3, Y for KL4) under:
+      1) X + Y <= total_budget
+      2) Try to balance post-augmentation KL3/KL4 totals as much as possible.
+    """
+    if total_budget <= 0:
+        return {3: 0, 4: 0}
+
+    quota = {3: 0, 4: 0}
+    avail = {3: max(0, int(avail_kl3)), 4: max(0, int(avail_kl4))}
+    real = {3: int(real_kl3), 4: int(real_kl4)}
+
+    for _ in range(int(total_budget)):
+        can3 = quota[3] < avail[3]
+        can4 = quota[4] < avail[4]
+        if not can3 and not can4:
+            break
+        if can3 and not can4:
+            quota[3] += 1
+            continue
+        if can4 and not can3:
+            quota[4] += 1
+            continue
+
+        total3 = real[3] + quota[3]
+        total4 = real[4] + quota[4]
+        if total3 <= total4:
+            quota[3] += 1
+        else:
+            quota[4] += 1
+
+    return quota
 
 
 # ============================================================
@@ -344,13 +394,22 @@ def main():
                         help='Only use guided images, exclude unconditional (default: True)')
     parser.add_argument('--include_unconditional', action='store_true', default=False,
                         help='Also include unconditional generated images')
-    parser.add_argument('--max_gen_ratio', type=float, default=2.0,
-                        help='Max ratio of generated images to real KL3/4 images. '
-                             'E.g., 2.0 means at most 2x real count. 0=no limit.')
+    parser.add_argument('--max_gen_ratio', type=float, default=0.5,
+                        help='Max ratio of total generated images to total real training images. '
+                             'E.g., 0.5 means generated <= 50% of all real train images. 0=no limit.')
+    parser.add_argument('--k_values', nargs='+', type=float, default=None,
+                        help='Optional sweep over K=(total_generated/total_real_train) for ldm/combined. '
+                             'K should be in (0,1], e.g. --k_values 0.25 0.5')
     parser.add_argument('--img_size', type=int, default=128)
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--epochs', type=int, default=30)
     parser.add_argument('--lr', type=float, default=1e-4)
+    parser.add_argument('--no_class_weights', action='store_true', default=False,
+                        help='Disable inverse-frequency class weights in CE loss')
+    parser.add_argument('--no_weighted_sampler', action='store_true', default=False,
+                        help='Disable WeightedRandomSampler (use plain shuffle)')
+    parser.add_argument('--drop_last', action='store_true', default=False,
+                        help='Drop last incomplete batch (default: False)')
     parser.add_argument('--experiment', type=str, default='all',
                         choices=['baseline', 'traditional', 'ldm', 'combined', 'all'])
     parser.add_argument('--num_workers', type=int, default=4)
@@ -433,11 +492,47 @@ def main():
                           if args.experiment == 'all'
                           else [args.experiment])
 
+    k_sweep = None
+    if args.k_values is not None:
+        k_sweep = sorted(args.k_values)
+        for k in k_sweep:
+            if k <= 0 or k > 1:
+                raise ValueError(
+                    f"Invalid K in --k_values: {k}. For this codebase K=total_generated/total_real_train, "
+                    "so K must be in (0, 1]."
+                )
+        print(f"K sweep enabled (K=total_generated/total_real_train): {k_sweep}")
+
     results = {}
 
+    run_plan = []
     for exp_name in experiments_to_run:
+        if exp_name in ['ldm', 'combined'] and k_sweep is not None:
+            for k in k_sweep:
+                run_plan.append({
+                    'base_exp': exp_name,
+                    'result_name': f'{exp_name}_K{k:g}',
+                    'max_gen_ratio': k,
+                    'k': k
+                })
+        else:
+            run_plan.append({
+                'base_exp': exp_name,
+                'result_name': exp_name,
+                'max_gen_ratio': args.max_gen_ratio,
+                'k': None
+            })
+
+    for plan in run_plan:
+        exp_name = plan['base_exp']
+        result_name = plan['result_name']
+        max_gen_ratio = plan['max_gen_ratio']
+
         print(f"\n{'='*60}")
-        print(f"Experiment: {exp_name}")
+        print(f"Experiment: {result_name}")
+        if plan['k'] is not None:
+            print(f"  K=total_generated/total_real_train={plan['k']:.4f} "
+                  f"-> max_gen_ratio={max_gen_ratio:.4f}")
         print(f"{'='*60}")
 
         # Reset model for each experiment
@@ -475,30 +570,57 @@ def main():
                 img_size=args.img_size, augment=augment
             )
 
-            # Count real KL3/4 to cap generated images
+            # Count real train images / KL3/4 for generated budget planning
+            real_total = len(real_dataset)
             real_kl3 = int((train_df['v00_KL'] == 3).sum())
             real_kl4 = int((train_df['v00_KL'] == 4).sum())
-            max_gen = {3: real_kl3, 4: real_kl4}
-            if args.max_gen_ratio > 0:
-                max_gen = {3: int(real_kl3 * args.max_gen_ratio),
-                           4: int(real_kl4 * args.max_gen_ratio)}
-                print(f"  Max generated: KL3<={max_gen[3]}, KL4<={max_gen[4]} "
-                      f"(ratio={args.max_gen_ratio}x real)")
+            max_total_gen = (np.inf if max_gen_ratio == 0
+                             else int(real_total * max_gen_ratio))
 
-            gen_datasets = []
-            total_gen = 0
+            # Build generated datasets first so we know true available counts
+            raw_gen_datasets = []
+            avail = {3: 0, 4: 0}
             for d in gen_info:
                 gen_ds = GeneratedImageDataset(
                     d['path'], d['kl'], args.img_size, augment=augment
                 )
-                # Cap number of generated images
-                if args.max_gen_ratio > 0 and len(gen_ds) > max_gen[d['kl']]:
-                    gen_ds.image_paths = gen_ds.image_paths[:max_gen[d['kl']]]
-                    print(f"  + {d['name']}: capped to {len(gen_ds)} images (KL{d['kl']})")
+                raw_gen_datasets.append((d, gen_ds))
+                avail[d['kl']] += len(gen_ds)
+
+            if np.isinf(max_total_gen):
+                class_quota = {3: avail[3], 4: avail[4]}
+                print(f"  Max generated: no limit (ratio=0)")
+            else:
+                class_quota = plan_generated_quota(
+                    real_kl3=real_kl3,
+                    real_kl4=real_kl4,
+                    avail_kl3=avail[3],
+                    avail_kl4=avail[4],
+                    total_budget=max_total_gen
+                )
+                print(f"  Real train images: {real_total}, generated budget <= {max_total_gen} "
+                      f"(ratio={max_gen_ratio}x real_total)")
+                print(f"  Planned generated quota: KL3={class_quota[3]}, KL4={class_quota[4]} "
+                      f"(total={class_quota[3] + class_quota[4]})")
+                print(f"  Post-augmentation KL3/KL4 target totals: "
+                      f"{real_kl3 + class_quota[3]} / {real_kl4 + class_quota[4]}")
+
+            remaining_quota = class_quota.copy()
+            gen_datasets = []
+            total_gen = 0
+            for d, gen_ds in raw_gen_datasets:
+                take = min(len(gen_ds), remaining_quota[d['kl']])
+                if take <= 0:
+                    print(f"  + {d['name']}: skipped by quota (KL{d['kl']})")
+                    continue
+                if take < len(gen_ds):
+                    gen_ds.image_paths = gen_ds.image_paths[:take]
+                    print(f"  + {d['name']}: capped to {take} images (KL{d['kl']})")
                 else:
-                    print(f"  + {d['name']}: {len(gen_ds)} generated KL{d['kl']} images")
+                    print(f"  + {d['name']}: {take} generated KL{d['kl']} images")
+                remaining_quota[d['kl']] -= take
                 gen_datasets.append(gen_ds)
-                total_gen += len(gen_ds)
+                total_gen += take
 
             if gen_datasets:
                 train_dataset = ConcatDataset([real_dataset] + gen_datasets)
@@ -509,21 +631,47 @@ def main():
                 train_dataset = real_dataset
                 print(f"  WARNING: No generated images! Using real data only.")
 
+        # ---- Class balancing ----
+        train_labels = extract_labels(train_dataset)
+        label_counts = np.bincount(train_labels, minlength=5)
+        print(f"  Train label counts (after augmentation concat): {label_counts.tolist()}")
+
+        class_weights = None
+        if not args.no_class_weights:
+            class_weights_np = np.zeros(5, dtype=np.float32)
+            non_zero = label_counts > 0
+            class_weights_np[non_zero] = (
+                len(train_labels) / (5.0 * label_counts[non_zero])
+            )
+            class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device)
+            print(f"  CE class weights: {[round(float(w), 4) for w in class_weights]}")
+
+        sampler = None
+        if not args.no_weighted_sampler:
+            sample_weights = [1.0 / max(label_counts[y], 1) for y in train_labels]
+            sampler = WeightedRandomSampler(
+                weights=torch.DoubleTensor(sample_weights),
+                num_samples=len(sample_weights),
+                replacement=True
+            )
+            print("  Using WeightedRandomSampler for balanced mini-batches")
+
         train_loader = DataLoader(
             train_dataset, batch_size=args.batch_size,
-            shuffle=True, num_workers=args.num_workers,
-            pin_memory=True, drop_last=True
+            shuffle=(sampler is None), sampler=sampler,
+            num_workers=args.num_workers,
+            pin_memory=True, drop_last=args.drop_last
         )
 
         # ---- Train ----
         val_metrics = train_classifier(
             model, train_loader, val_loader, device,
-            epochs=args.epochs, lr=args.lr
+            epochs=args.epochs, lr=args.lr, class_weights=class_weights
         )
 
         # ---- Evaluate on TEST set ----
         test_metrics = evaluate_classifier(model, test_loader, device)
-        print(f"\n  === Test Set Results for {exp_name} ===")
+        print(f"\n  === Test Set Results for {result_name} ===")
         print(f"    Balanced Accuracy: {test_metrics['balanced_accuracy']:.4f}")
         print(f"    F1 Macro:          {test_metrics['f1_macro']:.4f}")
         print(f"    Accuracy:          {test_metrics['accuracy']:.4f}")
@@ -535,7 +683,7 @@ def main():
             zero_division=0
         ))
 
-        results[exp_name] = test_metrics
+        results[result_name] = test_metrics
 
         # Save confusion matrix
         fig, ax = plt.subplots(figsize=(6, 5))
@@ -547,12 +695,13 @@ def main():
         ax.set_ylabel('True')
         ax.set_title(f'Confusion Matrix - {exp_name} ({joint_str})')
         plt.tight_layout()
-        plt.savefig(os.path.join(output_dir, f'confusion_{exp_name}.png'), dpi=150)
+        safe_name = result_name.replace('.', 'p')
+        plt.savefig(os.path.join(output_dir, f'confusion_{safe_name}.png'), dpi=150)
         plt.close()
 
         # Save model
         torch.save(model.state_dict(),
-                   os.path.join(output_dir, f'classifier_{exp_name}.pt'))
+                   os.path.join(output_dir, f'classifier_{safe_name}.pt'))
 
     # ---- Summary ----
     if len(results) > 1:

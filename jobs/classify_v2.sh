@@ -18,7 +18,7 @@ module load python3/3.10.12
 cd /projectnb/cs790/students/panke66/ldm_project
 
 echo "Job started: $(date)"
-echo "Optimization: guided_only + max_gen_ratio=2.0"
+echo "Optimization: guided_only + max_gen_ratio=0.5"
 
 # ===== DIP =====
 echo ""
@@ -30,7 +30,7 @@ python train_classifier.py \
     --gen_dir generated_v2/ \
     --guided_ns 0.5 \
     --guided_only \
-    --max_gen_ratio 2.0 \
+    --max_gen_ratio 0.5 \
     --experiment all \
     --epochs 30 \
     --batch_size 64 \
@@ -46,7 +46,7 @@ python train_classifier.py \
     --gen_dir generated_pip/ \
     --guided_ns 0.5 \
     --guided_only \
-    --max_gen_ratio 2.0 \
+    --max_gen_ratio 0.5 \
     --experiment all \
     --epochs 30 \
     --batch_size 64 \
@@ -62,7 +62,7 @@ python train_classifier.py \
     --gen_dir generated_mcp/ \
     --guided_ns 0.5 \
     --guided_only \
-    --max_gen_ratio 2.0 \
+    --max_gen_ratio 0.5 \
     --experiment all \
     --epochs 30 \
     --batch_size 64 \
