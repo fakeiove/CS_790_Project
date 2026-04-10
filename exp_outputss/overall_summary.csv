@@ -1,0 +1,4 @@
+experiment,test_acc,test_f1_macro
+pooled_kl_classifier,0.7268339768339769,0.4665918115949569
+pooled_kl_plus_joint_classifier,0.7466216216216216,0.5864183520357423
+joint_classifier,0.9763513513513513,0.9763484680776526
