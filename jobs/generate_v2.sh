@@ -54,7 +54,7 @@ python generate_v2.py \
     --output_dir generated_v2/
 
 echo "=== Step 3: Guided generation (multiple noise strengths) ==="
-for NS in 0.3 0.4 0.5; do
+for NS in 0.3 0.4 0.5 0.6 0.7; do
     echo "--- Guided KL3, noise_strength=$NS ---"
     python generate_v2.py \
         --mode guided \
@@ -62,7 +62,7 @@ for NS in 0.3 0.4 0.5; do
         --noise_strength $NS \
         --cfg_scale 3.0 \
         --num_steps 100 \
-        --num_samples 500 \
+        --num_samples 800 \
         --output_dir generated_v2/
 
     echo "--- Guided KL4, noise_strength=$NS ---"
@@ -72,7 +72,7 @@ for NS in 0.3 0.4 0.5; do
         --noise_strength $NS \
         --cfg_scale 4.0 \
         --num_steps 100 \
-        --num_samples 300 \
+        --num_samples 800 \
         --output_dir generated_v2/
 done
 

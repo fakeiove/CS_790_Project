@@ -85,9 +85,35 @@ def generate_guided(model, vae, scheduler, device, source_loader, target_kl,
     all_kl_source = []
     count = 0
 
-    for batch in tqdm(source_loader, desc=f'Guided -> KL{target_kl} (ns={noise_strength})'):
-        if num_samples and count >= num_samples:
-            break
+    # If num_samples is set, keep cycling through source_loader until target count is reached.
+    # This avoids being capped by one pass over source dataset size.
+    if num_samples is None:
+        data_iter = iter(source_loader)
+        total_steps = len(source_loader)
+    else:
+        data_iter = iter(source_loader)
+        total_steps = max(1, int(np.ceil(num_samples / max(source_loader.batch_size or 1, 1))))
+
+    pbar = tqdm(total=total_steps, desc=f'Guided -> KL{target_kl} (ns={noise_strength})')
+
+    while True:
+        if num_samples is None:
+            try:
+                batch = next(data_iter)
+            except StopIteration:
+                break
+        else:
+            if count >= num_samples:
+                break
+            try:
+                batch = next(data_iter)
+            except StopIteration:
+                data_iter = iter(source_loader)
+                try:
+                    batch = next(data_iter)
+                except StopIteration:
+                    # Empty loader safeguard
+                    break
 
         images = batch['image'].to(device)
         kl_source = batch['kl_grade']
@@ -109,10 +135,21 @@ def generate_guided(model, vae, scheduler, device, source_loader, target_kl,
         gen_images = anti_checkerboard(gen_images)
         source_images = ((images + 1) / 2).clamp(0, 1)
 
+        if num_samples is not None:
+            remaining = num_samples - count
+            take = min(bs, remaining)
+            source_images = source_images[:take]
+            gen_images = gen_images[:take]
+            kl_source = kl_source[:take]
+            bs = take
+
         all_source.append(source_images.cpu())
         all_generated.append(gen_images.cpu())
         all_kl_source.extend(kl_source.tolist())
         count += bs
+        pbar.update(1)
+
+    pbar.close()
 
     return (torch.cat(all_source, dim=0)[:num_samples],
             torch.cat(all_generated, dim=0)[:num_samples],
@@ -355,6 +392,10 @@ def main():
             source_dataset, batch_size=args.batch_size, shuffle=True,
             num_workers=4
         )
+        print(f"Guided source pool size: {len(source_dataset)}")
+        if args.num_samples > len(source_dataset):
+            print(f"Requested {args.num_samples} guided samples; source pool is {len(source_dataset)}. "
+                  f"Will cycle source batches to reach requested count.")
 
         source, generated, kl_source = generate_guided(
             model, vae, scheduler, device,
