@@ -214,6 +214,10 @@ def main():
     parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--output_dir', type=str, default='generated_v2/')
     parser.add_argument('--joint_types', nargs='+', default=['DIP'])
+    parser.add_argument('--split_seed', type=int, default=42,
+                        help='Seed used for split file naming: split_<joint>_<seed>.json')
+    parser.add_argument('--all_source_patients', action='store_true', default=False,
+                        help='If set, guided mode uses all source patients (not train-only)')
     parser.add_argument('--use_ema', action='store_true', default=True,
                         help='Use EMA model for generation')
     parser.add_argument('--schedule', type=str, default='cosine',
@@ -329,8 +333,20 @@ def main():
         csv_path = os.path.join(args.data_dir, 'hand_long_clean2.csv')
         image_dir = os.path.join(args.data_dir, 'images')
 
+        patient_ids = None
+        if not args.all_source_patients:
+            joint_str = '_'.join(args.joint_types)
+            split_path = os.path.join(args.data_dir, f'split_{joint_str}_{args.split_seed}.json')
+            if os.path.exists(split_path):
+                split = load_patient_split(split_path)
+                patient_ids = split['train']
+                print(f"Guided source restricted to TRAIN patients from {split_path}")
+            else:
+                print(f"WARNING: split not found ({split_path}); fallback to all source patients")
+
         source_dataset = HandJointDataset(
             csv_path, image_dir,
+            patient_ids=patient_ids,
             joint_types=args.joint_types,
             kl_filter=args.source_kl,
             augment=False
