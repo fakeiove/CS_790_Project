@@ -1,0 +1,192 @@
+[Device] cuda
+[CUDA available] True
+[Visible GPU count] 2
+[GPU 0] NVIDIA L40S
+[GPU 1] NVIDIA L40S
+[Dataset] usable images: 41051
+[Dataset] skipped images: 9
+[Dataset] first few skipped files:
+  ('9076879_dip5.png', 'missing_kl_for_DIP5')
+  ('9244537_pip4.png', 'missing_kl_for_PIP4')
+  ('9057192_dip5.png', 'missing_kl_for_DIP5')
+  ('9412037_dip5.png', 'missing_kl_for_DIP5')
+  ('9065926_dip5.png', 'missing_kl_for_DIP5')
+  ('9167275_dip5.png', 'missing_kl_for_DIP5')
+  ('9258662_dip5.png', 'missing_kl_for_DIP5')
+  ('9921811_pip5.png', 'missing_kl_for_PIP5')
+  ('9959748_dip5.png', 'missing_kl_for_DIP5')
+
+[Distribution] joint_type x KL
+DIP: KL0=8487, KL1=1774, KL2=2545, KL3=215, KL4=171
+PIP: KL0=9776, KL1=2217, KL2=1665, KL3=69, KL4=45
+MCP: KL0=13226, KL1=546, KL2=274, KL3=24, KL4=17
+[Augment] original train images: 34894
+[Augment] added augmented images: 17447
+[Augment] final train size: 52341
+[Using DataParallel on 2 GPUs]
+Epoch [001/120] | beta=0.000025 | Train 0.080384 (L1 0.054448, KL 0.034483, SSIM 0.7406) | Val 0.025717 (L1 0.010739, KL 0.009457, SSIM 0.8502)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_001.png
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [002/120] | beta=0.000050 | Train 0.028756 (L1 0.020478, KL 0.005986, SSIM 0.9172) | Val 0.013980 (L1 0.009964, KL 0.006195, SSIM 0.9598)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [003/120] | beta=0.000075 | Train 0.023307 (L1 0.018466, KL 0.004780, SSIM 0.9516) | Val 0.021283 (L1 0.016272, KL 0.003108, SSIM 0.9499)
+Epoch [004/120] | beta=0.000100 | Train 0.020136 (L1 0.016271, KL 0.001508, SSIM 0.9613) | Val 0.014293 (L1 0.010101, KL 0.000610, SSIM 0.9581)
+Epoch [005/120] | beta=0.000125 | Train 0.019059 (L1 0.015541, KL 0.000264, SSIM 0.9648) | Val 0.022365 (L1 0.009872, KL 0.000077, SSIM 0.8751)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_005.png
+Epoch [006/120] | beta=0.000150 | Train 0.017747 (L1 0.014358, KL 0.000069, SSIM 0.9661) | Val 0.009094 (L1 0.006212, KL 0.000062, SSIM 0.9712)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [007/120] | beta=0.000175 | Train 0.016564 (L1 0.013352, KL 0.000098, SSIM 0.9679) | Val 0.007284 (L1 0.004507, KL 0.000056, SSIM 0.9722)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [008/120] | beta=0.000200 | Train 0.014819 (L1 0.011769, KL 0.000126, SSIM 0.9695) | Val 0.009484 (L1 0.006479, KL 0.000062, SSIM 0.9700)
+Epoch [009/120] | beta=0.000225 | Train 0.014701 (L1 0.011724, KL 0.000198, SSIM 0.9702) | Val 0.008285 (L1 0.005669, KL 0.000382, SSIM 0.9738)
+Epoch [010/120] | beta=0.000250 | Train 0.012385 (L1 0.009574, KL 0.000163, SSIM 0.9719) | Val 0.006789 (L1 0.004140, KL 0.000059, SSIM 0.9735)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_010.png
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [011/120] | beta=0.000275 | Train 0.012419 (L1 0.009652, KL 0.000058, SSIM 0.9723) | Val 0.007088 (L1 0.004585, KL 0.000086, SSIM 0.9750)
+Epoch [012/120] | beta=0.000300 | Train 0.010903 (L1 0.008204, KL 0.000038, SSIM 0.9730) | Val 0.007085 (L1 0.004682, KL 0.000025, SSIM 0.9760)
+Epoch [013/120] | beta=0.000325 | Train 0.010216 (L1 0.007603, KL 0.000032, SSIM 0.9739) | Val 0.006931 (L1 0.004379, KL 0.000058, SSIM 0.9745)
+Epoch [014/120] | beta=0.000350 | Train 0.009902 (L1 0.007325, KL 0.000050, SSIM 0.9742) | Val 0.008399 (L1 0.006014, KL 0.000022, SSIM 0.9761)
+Epoch [015/120] | beta=0.000375 | Train 0.009320 (L1 0.006777, KL 0.000037, SSIM 0.9746) | Val 0.009601 (L1 0.007186, KL 0.000055, SSIM 0.9758)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_015.png
+Epoch [016/120] | beta=0.000400 | Train 0.008665 (L1 0.006162, KL 0.000034, SSIM 0.9750) | Val 0.007146 (L1 0.004686, KL 0.000053, SSIM 0.9754)
+Epoch [017/120] | beta=0.000425 | Train 0.008559 (L1 0.006088, KL 0.000044, SSIM 0.9753) | Val 0.006176 (L1 0.003808, KL 0.000116, SSIM 0.9763)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [018/120] | beta=0.000450 | Train 0.008441 (L1 0.006005, KL 0.000052, SSIM 0.9756) | Val 0.009533 (L1 0.007031, KL 0.000060, SSIM 0.9750)
+Epoch [019/120] | beta=0.000475 | Train 0.008248 (L1 0.005825, KL 0.000042, SSIM 0.9758) | Val 0.006625 (L1 0.004083, KL 0.000049, SSIM 0.9746)
+Epoch [020/120] | beta=0.000500 | Train 0.007863 (L1 0.005475, KL 0.000035, SSIM 0.9761) | Val 0.006504 (L1 0.004270, KL 0.000013, SSIM 0.9777)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_020.png
+Epoch [021/120] | beta=0.000525 | Train 0.007431 (L1 0.005064, KL 0.000022, SSIM 0.9763) | Val 0.006016 (L1 0.003835, KL 0.000016, SSIM 0.9782)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [022/120] | beta=0.000550 | Train 0.007659 (L1 0.005307, KL 0.000031, SSIM 0.9765) | Val 0.006027 (L1 0.003825, KL 0.000025, SSIM 0.9780)
+Epoch [023/120] | beta=0.000575 | Train 0.008100 (L1 0.005733, KL 0.000052, SSIM 0.9763) | Val 0.006811 (L1 0.004538, KL 0.000061, SSIM 0.9773)
+Epoch [024/120] | beta=0.000600 | Train 0.007745 (L1 0.005403, KL 0.000047, SSIM 0.9766) | Val 0.006397 (L1 0.004186, KL 0.000014, SSIM 0.9779)
+Epoch [025/120] | beta=0.000625 | Train 0.007523 (L1 0.005194, KL 0.000018, SSIM 0.9767) | Val 0.004797 (L1 0.002640, KL 0.000033, SSIM 0.9784)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_025.png
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [026/120] | beta=0.000650 | Train 0.007183 (L1 0.004875, KL 0.000026, SSIM 0.9769) | Val 0.006649 (L1 0.004467, KL 0.000038, SSIM 0.9782)
+Epoch [027/120] | beta=0.000675 | Train 0.007407 (L1 0.005115, KL 0.000042, SSIM 0.9771) | Val 0.005427 (L1 0.003255, KL 0.000104, SSIM 0.9783)
+Epoch [028/120] | beta=0.000700 | Train 0.007108 (L1 0.004827, KL 0.000039, SSIM 0.9772) | Val 0.004383 (L1 0.002242, KL 0.000049, SSIM 0.9786)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [029/120] | beta=0.000725 | Train 0.007027 (L1 0.004757, KL 0.000028, SSIM 0.9773) | Val 0.005691 (L1 0.003428, KL 0.000023, SSIM 0.9774)
+Epoch [030/120] | beta=0.000750 | Train 0.007136 (L1 0.004875, KL 0.000024, SSIM 0.9774) | Val 0.004725 (L1 0.002613, KL 0.000044, SSIM 0.9789)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_030.png
+Epoch [031/120] | beta=0.000775 | Train 0.006685 (L1 0.004425, KL 0.000031, SSIM 0.9774) | Val 0.005315 (L1 0.003196, KL 0.000028, SSIM 0.9788)
+Epoch [032/120] | beta=0.000800 | Train 0.006741 (L1 0.004494, KL 0.000041, SSIM 0.9775) | Val 0.007778 (L1 0.005647, KL 0.000036, SSIM 0.9787)
+Epoch [033/120] | beta=0.000825 | Train 0.006787 (L1 0.004545, KL 0.000026, SSIM 0.9776) | Val 0.004775 (L1 0.002629, KL 0.000023, SSIM 0.9785)
+Epoch [034/120] | beta=0.000850 | Train 0.006652 (L1 0.004409, KL 0.000019, SSIM 0.9776) | Val 0.005694 (L1 0.003591, KL 0.000022, SSIM 0.9790)
+Epoch [035/120] | beta=0.000875 | Train 0.006537 (L1 0.004318, KL 0.000020, SSIM 0.9778) | Val 0.004777 (L1 0.002659, KL 0.000042, SSIM 0.9788)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_035.png
+Epoch [036/120] | beta=0.000900 | Train 0.006377 (L1 0.004153, KL 0.000020, SSIM 0.9778) | Val 0.006974 (L1 0.004871, KL 0.000014, SSIM 0.9790)
+Epoch [037/120] | beta=0.000925 | Train 0.006407 (L1 0.004187, KL 0.000021, SSIM 0.9778) | Val 0.007615 (L1 0.005503, KL 0.000011, SSIM 0.9789)
+Epoch [038/120] | beta=0.000950 | Train 0.006524 (L1 0.004307, KL 0.000026, SSIM 0.9778) | Val 0.009771 (L1 0.007635, KL 0.000028, SSIM 0.9786)
+Epoch [039/120] | beta=0.000975 | Train 0.006622 (L1 0.004395, KL 0.000019, SSIM 0.9777) | Val 0.004522 (L1 0.002446, KL 0.000011, SSIM 0.9792)
+Epoch [040/120] | beta=0.001000 | Train 0.006724 (L1 0.004495, KL 0.000022, SSIM 0.9777) | Val 0.005502 (L1 0.003310, KL 0.000033, SSIM 0.9781)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_040.png
+Epoch [041/120] | beta=0.001000 | Train 0.006087 (L1 0.003883, KL 0.000021, SSIM 0.9780) | Val 0.005420 (L1 0.003351, KL 0.000014, SSIM 0.9793)
+Epoch [042/120] | beta=0.001000 | Train 0.006370 (L1 0.004162, KL 0.000020, SSIM 0.9779) | Val 0.005657 (L1 0.003582, KL 0.000012, SSIM 0.9792)
+Epoch [043/120] | beta=0.001000 | Train 0.006192 (L1 0.003998, KL 0.000015, SSIM 0.9781) | Val 0.004649 (L1 0.002408, KL 0.000012, SSIM 0.9776)
+Epoch [044/120] | beta=0.001000 | Train 0.006215 (L1 0.004031, KL 0.000018, SSIM 0.9782) | Val 0.005457 (L1 0.003364, KL 0.000023, SSIM 0.9791)
+Epoch [045/120] | beta=0.001000 | Train 0.006530 (L1 0.004339, KL 0.000053, SSIM 0.9781) | Val 0.007398 (L1 0.005304, KL 0.000025, SSIM 0.9791)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_045.png
+Epoch [046/120] | beta=0.001000 | Train 0.006455 (L1 0.004256, KL 0.000030, SSIM 0.9780) | Val 0.004710 (L1 0.002663, KL 0.000026, SSIM 0.9795)
+Epoch [047/120] | beta=0.001000 | Train 0.006071 (L1 0.003892, KL 0.000029, SSIM 0.9782) | Val 0.004983 (L1 0.002935, KL 0.000010, SSIM 0.9795)
+Epoch [048/120] | beta=0.001000 | Train 0.006112 (L1 0.003936, KL 0.000030, SSIM 0.9782) | Val 0.006352 (L1 0.004241, KL 0.000029, SSIM 0.9789)
+Epoch [049/120] | beta=0.001000 | Train 0.006064 (L1 0.003878, KL 0.000050, SSIM 0.9781) | Val 0.007098 (L1 0.004972, KL 0.000031, SSIM 0.9787)
+Epoch [050/120] | beta=0.001000 | Train 0.006047 (L1 0.003875, KL 0.000036, SSIM 0.9783) | Val 0.007018 (L1 0.004916, KL 0.000053, SSIM 0.9790)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_050.png
+Epoch [051/120] | beta=0.001000 | Train 0.005824 (L1 0.003652, KL 0.000030, SSIM 0.9783) | Val 0.005991 (L1 0.003935, KL 0.000015, SSIM 0.9794)
+Epoch [052/120] | beta=0.001000 | Train 0.005742 (L1 0.003578, KL 0.000027, SSIM 0.9784) | Val 0.004383 (L1 0.002342, KL 0.000024, SSIM 0.9796)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [053/120] | beta=0.001000 | Train 0.005864 (L1 0.003703, KL 0.000029, SSIM 0.9784) | Val 0.004658 (L1 0.002629, KL 0.000035, SSIM 0.9797)
+Epoch [054/120] | beta=0.001000 | Train 0.005858 (L1 0.003692, KL 0.000033, SSIM 0.9783) | Val 0.004018 (L1 0.001973, KL 0.000119, SSIM 0.9796)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [055/120] | beta=0.001000 | Train 0.005779 (L1 0.003625, KL 0.000066, SSIM 0.9785) | Val 0.005527 (L1 0.003503, KL 0.000025, SSIM 0.9798)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_055.png
+Epoch [056/120] | beta=0.001000 | Train 0.005757 (L1 0.003612, KL 0.000054, SSIM 0.9785) | Val 0.004291 (L1 0.002250, KL 0.000018, SSIM 0.9796)
+Epoch [057/120] | beta=0.001000 | Train 0.006003 (L1 0.003838, KL 0.000033, SSIM 0.9784) | Val 0.004413 (L1 0.002383, KL 0.000047, SSIM 0.9797)
+Epoch [058/120] | beta=0.001000 | Train 0.005814 (L1 0.003665, KL 0.000079, SSIM 0.9785) | Val 0.010709 (L1 0.008572, KL 0.000035, SSIM 0.9786)
+Epoch [059/120] | beta=0.001000 | Train 0.005762 (L1 0.003617, KL 0.000080, SSIM 0.9786) | Val 0.004623 (L1 0.002540, KL 0.000240, SSIM 0.9792)
+Epoch [060/120] | beta=0.001000 | Train 0.005744 (L1 0.003600, KL 0.000058, SSIM 0.9786) | Val 0.005366 (L1 0.003320, KL 0.000069, SSIM 0.9795)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_060.png
+Epoch [061/120] | beta=0.001000 | Train 0.005780 (L1 0.003643, KL 0.000114, SSIM 0.9786) | Val 0.004805 (L1 0.002760, KL 0.000091, SSIM 0.9796)
+Epoch [062/120] | beta=0.001000 | Train 0.005461 (L1 0.003329, KL 0.000066, SSIM 0.9787) | Val 0.005436 (L1 0.003330, KL 0.000023, SSIM 0.9789)
+Epoch [063/120] | beta=0.001000 | Train 0.005701 (L1 0.003564, KL 0.000092, SSIM 0.9786) | Val 0.005081 (L1 0.003031, KL 0.000025, SSIM 0.9795)
+Epoch [064/120] | beta=0.001000 | Train 0.005537 (L1 0.003406, KL 0.000058, SSIM 0.9787) | Val 0.004848 (L1 0.002795, KL 0.000030, SSIM 0.9795)
+Epoch [065/120] | beta=0.001000 | Train 0.005618 (L1 0.003483, KL 0.000048, SSIM 0.9787) | Val 0.004021 (L1 0.001987, KL 0.000027, SSIM 0.9797)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_065.png
+Epoch [066/120] | beta=0.001000 | Train 0.005735 (L1 0.003580, KL 0.000071, SSIM 0.9785) | Val 0.003983 (L1 0.001966, KL 0.000329, SSIM 0.9798)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [067/120] | beta=0.001000 | Train 0.005523 (L1 0.003390, KL 0.000156, SSIM 0.9787) | Val 0.004518 (L1 0.002459, KL 0.000219, SSIM 0.9794)
+Epoch [068/120] | beta=0.001000 | Train 0.005409 (L1 0.003281, KL 0.000176, SSIM 0.9787) | Val 0.006569 (L1 0.004520, KL 0.000011, SSIM 0.9795)
+Epoch [069/120] | beta=0.001000 | Train 0.005622 (L1 0.003492, KL 0.000010, SSIM 0.9787) | Val 0.005475 (L1 0.003437, KL 0.000006, SSIM 0.9796)
+Epoch [070/120] | beta=0.001000 | Train 0.005383 (L1 0.003265, KL 0.000010, SSIM 0.9788) | Val 0.004869 (L1 0.002810, KL 0.000015, SSIM 0.9794)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_070.png
+Epoch [071/120] | beta=0.001000 | Train 0.005374 (L1 0.003250, KL 0.000012, SSIM 0.9788) | Val 0.003519 (L1 0.001527, KL 0.000015, SSIM 0.9801)
+  -> saved best model to ./output_sharp_unet_cvae_dip_only_dp/checkpoints/best_model.pth
+Epoch [072/120] | beta=0.001000 | Train 0.005604 (L1 0.003484, KL 0.000016, SSIM 0.9788) | Val 0.004486 (L1 0.002477, KL 0.000013, SSIM 0.9799)
+Epoch [073/120] | beta=0.001000 | Train 0.005605 (L1 0.003462, KL 0.000018, SSIM 0.9786) | Val 0.006228 (L1 0.004195, KL 0.000035, SSIM 0.9797)
+Epoch [074/120] | beta=0.001000 | Train 0.005378 (L1 0.003278, KL 0.000027, SSIM 0.9790) | Val 0.004235 (L1 0.002203, KL 0.000017, SSIM 0.9797)
+Epoch [075/120] | beta=0.001000 | Train 0.005304 (L1 0.003165, KL 0.000028, SSIM 0.9786) | Val 0.004401 (L1 0.002385, KL 0.000021, SSIM 0.9798)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_075.png
+Epoch [076/120] | beta=0.001000 | Train 0.005340 (L1 0.003229, KL 0.000029, SSIM 0.9789) | Val 0.007477 (L1 0.005473, KL 0.000042, SSIM 0.9800)
+Epoch [077/120] | beta=0.001000 | Train 0.005391 (L1 0.003261, KL 0.000047, SSIM 0.9787) | Val 0.005800 (L1 0.003782, KL 0.000039, SSIM 0.9798)
+Epoch [078/120] | beta=0.001000 | Train 0.005481 (L1 0.003351, KL 0.000035, SSIM 0.9787) | Val 0.006095 (L1 0.004075, KL 0.000015, SSIM 0.9798)
+Epoch [079/120] | beta=0.001000 | Train 0.005395 (L1 0.003284, KL 0.000045, SSIM 0.9789) | Val 0.004282 (L1 0.002284, KL 0.000019, SSIM 0.9800)
+Epoch [080/120] | beta=0.001000 | Train 0.005296 (L1 0.003193, KL 0.000047, SSIM 0.9790) | Val 0.005917 (L1 0.003217, KL 0.000175, SSIM 0.9730)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_080.png
+Epoch [081/120] | beta=0.001000 | Train 0.005244 (L1 0.003136, KL 0.000054, SSIM 0.9789) | Val 0.003824 (L1 0.001813, KL 0.000019, SSIM 0.9799)
+Epoch [082/120] | beta=0.001000 | Train 0.005216 (L1 0.003106, KL 0.000043, SSIM 0.9789) | Val 0.007257 (L1 0.005211, KL 0.000026, SSIM 0.9795)
+Epoch [083/120] | beta=0.001000 | Train 0.005217 (L1 0.003113, KL 0.000029, SSIM 0.9790) | Val 0.003628 (L1 0.001645, KL 0.000019, SSIM 0.9802)
+Epoch [084/120] | beta=0.001000 | Train 0.005334 (L1 0.003232, KL 0.000030, SSIM 0.9790) | Val 0.005307 (L1 0.003314, KL 0.000043, SSIM 0.9801)
+Epoch [085/120] | beta=0.001000 | Train 0.005242 (L1 0.003136, KL 0.000052, SSIM 0.9789) | Val 0.004426 (L1 0.002442, KL 0.000028, SSIM 0.9802)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_085.png
+Epoch [086/120] | beta=0.001000 | Train 0.004967 (L1 0.002865, KL 0.000096, SSIM 0.9790) | Val 0.005956 (L1 0.003916, KL 0.000045, SSIM 0.9796)
+Epoch [087/120] | beta=0.001000 | Train 0.005170 (L1 0.003062, KL 0.000081, SSIM 0.9789) | Val 0.004077 (L1 0.002070, KL 0.000093, SSIM 0.9799)
+Epoch [088/120] | beta=0.001000 | Train 0.004973 (L1 0.002883, KL 0.000043, SSIM 0.9791) | Val 0.004706 (L1 0.002722, KL 0.000028, SSIM 0.9802)
+Epoch [089/120] | beta=0.001000 | Train 0.005099 (L1 0.002993, KL 0.000027, SSIM 0.9789) | Val 0.004925 (L1 0.002873, KL 0.000029, SSIM 0.9795)
+Epoch [090/120] | beta=0.001000 | Train 0.005120 (L1 0.003021, KL 0.000025, SSIM 0.9790) | Val 0.006701 (L1 0.004712, KL 0.000012, SSIM 0.9801)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_090.png
+Epoch [091/120] | beta=0.001000 | Train 0.004845 (L1 0.002749, KL 0.000023, SSIM 0.9790) | Val 0.004852 (L1 0.002862, KL 0.000016, SSIM 0.9801)
+Epoch [092/120] | beta=0.001000 | Train 0.004935 (L1 0.002840, KL 0.000030, SSIM 0.9791) | Val 0.005081 (L1 0.003091, KL 0.000011, SSIM 0.9801)
+Epoch [093/120] | beta=0.001000 | Train 0.005183 (L1 0.003077, KL 0.000026, SSIM 0.9789) | Val 0.006027 (L1 0.004042, KL 0.000020, SSIM 0.9802)
+Epoch [094/120] | beta=0.001000 | Train 0.005124 (L1 0.003031, KL 0.000027, SSIM 0.9791) | Val 0.004503 (L1 0.002518, KL 0.000098, SSIM 0.9802)
+Epoch [095/120] | beta=0.001000 | Train 0.005106 (L1 0.003002, KL 0.000027, SSIM 0.9790) | Val 0.003856 (L1 0.001837, KL 0.000008, SSIM 0.9798)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_095.png
+Epoch [096/120] | beta=0.001000 | Train 0.005135 (L1 0.003039, KL 0.000024, SSIM 0.9790) | Val 0.005511 (L1 0.003448, KL 0.000028, SSIM 0.9794)
+Epoch [097/120] | beta=0.001000 | Train 0.005023 (L1 0.002931, KL 0.000032, SSIM 0.9791) | Val 0.004141 (L1 0.002113, KL 0.000040, SSIM 0.9797)
+Epoch [098/120] | beta=0.001000 | Train 0.005028 (L1 0.002914, KL 0.000029, SSIM 0.9789) | Val 0.005347 (L1 0.003322, KL 0.000036, SSIM 0.9797)
+Epoch [099/120] | beta=0.001000 | Train 0.004893 (L1 0.002811, KL 0.000019, SSIM 0.9792) | Val 0.007401 (L1 0.005399, KL 0.000011, SSIM 0.9800)
+Epoch [100/120] | beta=0.001000 | Train 0.005113 (L1 0.003020, KL 0.000017, SSIM 0.9791) | Val 0.003826 (L1 0.001846, KL 0.000009, SSIM 0.9802)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_100.png
+Epoch [101/120] | beta=0.001000 | Train 0.004982 (L1 0.002887, KL 0.000025, SSIM 0.9791) | Val 0.005189 (L1 0.003197, KL 0.000014, SSIM 0.9801)
+Epoch [102/120] | beta=0.001000 | Train 0.004909 (L1 0.002837, KL 0.000024, SSIM 0.9793) | Val 0.007029 (L1 0.005033, KL 0.000016, SSIM 0.9800)
+Epoch [103/120] | beta=0.001000 | Train 0.004881 (L1 0.002786, KL 0.000031, SSIM 0.9790) | Val 0.004975 (L1 0.002981, KL 0.000082, SSIM 0.9801)
+Epoch [104/120] | beta=0.001000 | Train 0.004786 (L1 0.002705, KL 0.000036, SSIM 0.9792) | Val 0.004034 (L1 0.002057, KL 0.000016, SSIM 0.9802)
+Epoch [105/120] | beta=0.001000 | Train 0.004953 (L1 0.002863, KL 0.000026, SSIM 0.9791) | Val 0.003535 (L1 0.001558, KL 0.000018, SSIM 0.9802)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_105.png
+Epoch [106/120] | beta=0.001000 | Train 0.004905 (L1 0.002832, KL 0.000023, SSIM 0.9793) | Val 0.003740 (L1 0.001752, KL 0.000016, SSIM 0.9801)
+Epoch [107/120] | beta=0.001000 | Train 0.004726 (L1 0.002651, KL 0.000027, SSIM 0.9792) | Val 0.004685 (L1 0.002684, KL 0.000025, SSIM 0.9800)
+Epoch [108/120] | beta=0.001000 | Train 0.004983 (L1 0.002900, KL 0.000023, SSIM 0.9792) | Val 0.005674 (L1 0.003694, KL 0.000018, SSIM 0.9802)
+Epoch [109/120] | beta=0.001000 | Train 0.004930 (L1 0.002846, KL 0.000026, SSIM 0.9792) | Val 0.005706 (L1 0.003721, KL 0.000010, SSIM 0.9801)
+Epoch [110/120] | beta=0.001000 | Train 0.004757 (L1 0.002672, KL 0.000029, SSIM 0.9792) | Val 0.004863 (L1 0.002890, KL 0.000027, SSIM 0.9803)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_110.png
+Epoch [111/120] | beta=0.001000 | Train 0.004976 (L1 0.002891, KL 0.000018, SSIM 0.9791) | Val 0.004410 (L1 0.002435, KL 0.000011, SSIM 0.9802)
+Epoch [112/120] | beta=0.001000 | Train 0.004929 (L1 0.002849, KL 0.000023, SSIM 0.9792) | Val 0.006456 (L1 0.004249, KL 0.000016, SSIM 0.9779)
+Epoch [113/120] | beta=0.001000 | Train 0.004920 (L1 0.002835, KL 0.000026, SSIM 0.9791) | Val 0.004758 (L1 0.002778, KL 0.000015, SSIM 0.9802)
+Epoch [114/120] | beta=0.001000 | Train 0.004689 (L1 0.002601, KL 0.000028, SSIM 0.9791) | Val 0.004513 (L1 0.002528, KL 0.000019, SSIM 0.9802)
+Epoch [115/120] | beta=0.001000 | Train 0.004732 (L1 0.002660, KL 0.000019, SSIM 0.9793) | Val 0.005950 (L1 0.003912, KL 0.000028, SSIM 0.9796)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_115.png
+Epoch [116/120] | beta=0.001000 | Train 0.004700 (L1 0.002635, KL 0.000022, SSIM 0.9794) | Val 0.004870 (L1 0.002877, KL 0.000022, SSIM 0.9801)
+Epoch [117/120] | beta=0.001000 | Train 0.004829 (L1 0.002755, KL 0.000034, SSIM 0.9793) | Val 0.004247 (L1 0.002268, KL 0.000050, SSIM 0.9802)
+Epoch [118/120] | beta=0.001000 | Train 0.004955 (L1 0.002866, KL 0.000026, SSIM 0.9791) | Val 0.003844 (L1 0.001825, KL 0.000016, SSIM 0.9798)
+Epoch [119/120] | beta=0.001000 | Train 0.004826 (L1 0.002748, KL 0.000018, SSIM 0.9792) | Val 0.004887 (L1 0.002921, KL 0.000015, SSIM 0.9803)
+Epoch [120/120] | beta=0.001000 | Train 0.004775 (L1 0.002698, KL 0.000031, SSIM 0.9792) | Val 0.005863 (L1 0.003860, KL 0.000024, SSIM 0.9800)
+[Saved] ./output_sharp_unet_cvae_dip_only_dp/samples/recon_epoch_120.png
+/usr4/cs790/hyx0516/Desktop/CS790/cvae_v3.py:954: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(best_model_path, map_location=DEVICE)
+[Model wrapper] DataParallel
+[Generated] DIP KL3 -> ./output_sharp_unet_cvae_dip_only_dp/generated/DIP_KL3
+[Generated] DIP KL4 -> ./output_sharp_unet_cvae_dip_only_dp/generated/DIP_KL4
+[Saved interpolation] ./output_sharp_unet_cvae_dip_only_dp/latent_interp_DIP_KL4.png
+
+[All Done] Sharp U-Net dual-condition CVAE training and generation completed.
